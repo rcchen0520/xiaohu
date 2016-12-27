@@ -15,6 +15,14 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('signup',function(){
+    $user = new \App\User();
+    return $user->signup();
+});
+
+Route::get('test',function(){
+return view('test');
+});
 /*
 |--------------------------------------------------------------------------
 | Application Routes
