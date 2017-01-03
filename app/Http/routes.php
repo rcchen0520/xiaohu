@@ -26,7 +26,7 @@ function rq($key=null,$default=null){
 }
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::any('api',function(){

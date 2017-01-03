@@ -894,12 +894,12 @@ class Request
     /**
      * Returns the root path from which this request is executed.
      *
-     * Suppose that an server.php file instantiates this request object:
+     * Suppose that an index.php file instantiates this request object:
      *
-     *  * http://localhost/server.php         returns an empty string
-     *  * http://localhost/server.php/page    returns an empty string
-     *  * http://localhost/web/server.php     returns '/web'
-     *  * http://localhost/we%20b/server.php  returns '/we%20b'
+     *  * http://localhost/index.php         returns an empty string
+     *  * http://localhost/index.php/page    returns an empty string
+     *  * http://localhost/web/index.php     returns '/web'
+     *  * http://localhost/we%20b/index.php  returns '/we%20b'
      *
      * @return string The raw path (i.e. not urldecoded)
      */
@@ -918,7 +918,7 @@ class Request
      * The base URL never ends with a /.
      *
      * This is similar to getBasePath(), except that it also includes the
-     * script filename (e.g. server.php) if one exists.
+     * script filename (e.g. index.php) if one exists.
      *
      * @return string The raw URL (i.e. not urldecoded)
      */

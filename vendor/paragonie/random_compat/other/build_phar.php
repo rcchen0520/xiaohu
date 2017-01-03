@@ -13,11 +13,11 @@ $phar = new Phar(
 );
 rename(
     dirname(__DIR__).'/lib/random.php', 
-    dirname(__DIR__).'/lib/server.php'
+    dirname(__DIR__).'/lib/index.php'
 );
 $phar->buildFromDirectory(dirname(__DIR__).'/lib');
 rename(
-    dirname(__DIR__).'/lib/server.php',
+    dirname(__DIR__).'/lib/index.php', 
     dirname(__DIR__).'/lib/random.php'
 );
 
