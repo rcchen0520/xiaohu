@@ -69,7 +69,7 @@
 			</div>
 		</div>
 	</div>
-
+	<!-- 视图路由 -->
 	<div ui-view></div>
 
 	<script type="text/ng-template" id='home.tpl'>
@@ -89,13 +89,24 @@
 							<div>测试：[:User.signup_data:]</div>
 							<label class="col-sm-2 control-label">用户名：</label>
 		    			<div class="col-sm-10">
-								<input type="text" name="signupName" class="form-control"
+								<input type="text" name="username" class="form-control"
 								placeholder="请输入用户名"
 								ng-model="User.signup_data.username"
+								ng-model-options="{updateOn:'blur'}"
 								ng-minlength="6"
 								ng-maxlength="16"
-								required>
+								required
+								>
+								<div class="help-block" ng-if="signupForm.username.$touched">
+									<div class="text-danger" ng-if="signupForm.username.$error.required">
+										用户名为必填项!
+									</div>
+									<div class="text-danger" ng-if="signupForm.username.$error.minlength||signupForm.username.$error.maxlength">
+										用户名长度必须为6-16位!
+									</div>
+								</div>
 		    			</div>
+
 		  			</div>
 		  			<div class="form-group">
 		    			<label class="col-sm-2 control-label">密码：</label>
@@ -105,14 +116,17 @@
 								ng-model="User.signup_data.password"
 								ng-minlength="6"
 								ng-maxlength="16"
-								required>
+								required
+								ng-model-options="{updateOn:'blur'}"
+								>
 		    			</div>
 		  			</div>
 						<div class="row">
 							<div class="col-sm-10 col-sm-offset-2">
 								<button type="submit" name="button" class="btn btn-primary"
-								ng-disable="signupForm.$invalid">注册</button>
+								>注册</button>
 							</div>
+							<!-- ng-disabled="signupForm.$invalid" -->
 						</div>
 					</form>
 				</div>
