@@ -25,11 +25,12 @@
 			<!-- 头部和按钮 -->
 			<!-- 响应内容 -->
 			<div class="collapse navbar-collapse" id="collapseNavbar">
-				<form class="navbar-form navbar-left" method="post">
+				<form class="navbar-form navbar-left" method="post" ng-controller="questionAddController">
 					<div class="form-group">
-						<input type="text" name="keyword" class="form-control">
+						<input type="text" name="keyword" ng-model="Question.new_question.title" class="form-control">
 						<button type="submit" name="button" class="btn btn-default">
-							<span class="glyphicon glyphicon-search"></span>
+							<!-- <span class="glyphicon glyphicon-search"></span> -->
+							提问
 						</button>
 					</div>
 				</form>
@@ -72,12 +73,6 @@
 	<!-- 视图路由 -->
 	<div ui-view></div>
 
-	<script type="text/ng-template" id='home.tpl'>
-		this is home page
-		<a ui-sref="home">home</a>
-		<a ui-sref="login">login</a>
-
-	</script>
 	<script type="text/ng-template" id='signup.tpl'>
 		<!-- 注册模板 -->
 		<div class="container" ng-controller="signupController">
@@ -88,7 +83,7 @@
 						<div class="form-group">
 							<div>测试：[:User.signup_data:]</div>
 							<label class="col-sm-2 control-label">用户名：</label>
-		    			<div class="col-sm-10">
+		    			<div class="col-sm-8">
 								<input type="text" name="username" class="form-control"
 								placeholder="请输入用户名"
 								ng-model="User.signup_data.username"
@@ -110,8 +105,8 @@
 		  			</div>
 		  			<div class="form-group">
 		    			<label class="col-sm-2 control-label">密码：</label>
-		    			<div class="col-sm-10">
-		      			<input type="password" name="signupPassword" class="form-control"
+		    			<div class="col-sm-8">
+		      			<input type="password" name="password" class="form-control"
 								placeholder="请输入密码"
 								ng-model="User.signup_data.password"
 								ng-minlength="6"
@@ -119,26 +114,141 @@
 								required
 								ng-model-options="{updateOn:'blur'}"
 								>
+								<div class="help-block" ng-if="signupForm.password.$touched">
+									<div class="text-danger" ng-if="signupForm.password.$error.required">
+										密码为必填项!
+									</div>
+									<div class="text-danger" ng-if="signupForm.password.$error.minlength||signupForm.username.$error.maxlength">
+										密码长度必须为6-16位!
+									</div>
+								</div>
 		    			</div>
 		  			</div>
 						<div class="row">
-							<div class="col-sm-10 col-sm-offset-2">
+							<div class="col-sm-8 col-sm-offset-2">
 								<button type="submit" name="button" class="btn btn-primary"
-								>注册</button>
+								ng-disabled="signupForm.$invalid">注册</button>
 							</div>
-							<!-- ng-disabled="signupForm.$invalid" -->
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
-
+		<!-- 注册模板 -->
 	</script>
 
 	<script type="text/ng-template" id='login.tpl'>
-		this is login page
-		<a ui-sref="home">home</a>
-		<a ui-sref="login">login</a>
+		<!-- 登录模板 -->
+		<div class="container" ng-controller="loginController">
+			<div class="panel panel-default">
+				<div class="panel-heading">登录</div>
+				<div class="panel-body">
+					<form class="form-horizontal" name="loginForm" ng-submit="User.login()">
+						<div class="form-group">
+							<div>测试：[:User.login_data:]</div>
+							<label class="col-sm-2 control-label">用户名：</label>
+		    			<div class="col-sm-8">
+								<input type="text" name="username" class="form-control"
+								placeholder="请输入用户名"
+								ng-model="User.login_data.username"
+								ng-model-options="{updateOn:'blur'}"
+								ng-minlength="6"
+								ng-maxlength="16"
+								required
+								>
+								<div class="help-block" ng-if="loginForm.username.$touched">
+									<div class="text-danger" ng-if="loginForm.username.$error.required">
+										用户名为必填项!
+									</div>
+									<div class="text-danger" ng-if="loginForm.username.$error.minlength||
+									loginForm.username.$error.maxlength">
+										用户名长度在6-12位之间！
+									</div>
+								</div>
+		    			</div>
+
+		  			</div>
+		  			<div class="form-group">
+		    			<label class="col-sm-2 control-label">密码：</label>
+		    			<div class="col-sm-8">
+		      			<input type="password" name="password" class="form-control"
+								placeholder="请输入密码"
+								ng-model="User.login_data.password"
+								ng-minlength="6"
+								ng-maxlength="16"
+								required
+								ng-model-options="{updateOn:'blur'}"
+								>
+								<div class="help-block" ng-if="loginForm.password.$touched">
+									<div class="text-danger" ng-if="loginForm.password.$error.required">
+										密码为必填项!
+									</div>
+									<div class="text-danger" ng-if="login_failed">
+										用户名或密码错误！
+									</div>
+								</div>
+		    			</div>
+
+		  			</div>
+						<div class="row">
+							<div class="col-sm-8 col-sm-offset-2">
+								<button type="submit" name="button" class="btn btn-success"
+								ng-disabled="loginForm.$invalid">登录</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		<!-- 登录模板 -->
+	</script>
+
+	<script type="text/ng-template" id='question.add.tpl'>
+		<!-- 提问 -->
+		<div class="container" ng-controller="questionAddController">
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+					<div class="panel panel-default">
+						<div class="panel-heading">添加提问</div>
+						<div class="panel-body">
+							<form class="form-horizontal" name="" ng-submit="">
+								<div class="form-group">
+									<label class="col-sm-2 control-label">标题：</label>
+				    			<div class="col-sm-8">
+										<input type="text" name="username" class="form-control"
+										placeholder="请输入问题标题"
+										required
+										>
+										<div class="help-block" ng-if="loginForm.username.$touched">
+											<div class="text-danger" ng-if="loginForm.username.$error.required">
+												用户名为必填项!
+											</div>
+											<div class="text-danger" ng-if="loginForm.username.$error.minlength||
+											loginForm.username.$error.maxlength">
+												用户名长度在6-12位之间！
+											</div>
+										</div>
+				    			</div>
+
+								</div>
+								<div class="form-group">
+									<label class="col-sm-2 control-label">描述：</label>
+									<div class="col-sm-8">
+										<textarea class="form-control" rows="3"></textarea>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-8 col-sm-offset-2">
+										<button class="btn btn-primary">提问</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 提问 -->
 	</script>
 
 	<script type="text/ng-template" id='404.tpl'>

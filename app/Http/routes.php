@@ -59,7 +59,7 @@ Route::any('api',function(){
    return ['version'=>0.1];
 });
 
-Route::any('api/signup',function(){
+Route::any('xiaohu/api/signup',function(){
     return user_ins()->signup();
 });
 
