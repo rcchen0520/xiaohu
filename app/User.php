@@ -226,6 +226,11 @@ class User extends Model
         return $user->save() ? suc():err('db update failed');
     }
 
+    public function exist()
+    {
+        return suc(['count' => $this->where(rq())->count()]);
+    }
+
     public function answers()
     {
         return $this

@@ -87,6 +87,10 @@ Route::any('api/user/read',function(){
     return user_ins()->read();
 })->middleware('web');
 
+Route::any('api/user/exist',function(){
+    return user_ins()->exist();
+})->middleware('web');
+
 Route::get('api/test',function(){
 //     dd(user_ins()->is_logged_in());
     return user_ins()->is_logged_in();
