@@ -48,9 +48,9 @@
             me.signup_data = {}; //就算没创建也会为我们递归创建
             me.login_data={};
             me.signup = function() {
-              $http.post('/xiaohu/api/signup', me.signup_data)
+              $http.post('/api/signup', me.signup_data)
                   .then(function(r) {
-                    console.log(r.data);
+                    console.log(r.data.status);
                       if (r.data.status) { //r.data是angularjs获取到的对象
                           me.signup_data = {};
                           $state.go('login');
