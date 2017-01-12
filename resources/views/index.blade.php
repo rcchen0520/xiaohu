@@ -183,6 +183,10 @@
 									<div class="text-danger" ng-if="loginForm.password.$error.required">
 										密码为必填项!
 									</div>
+									<div class="text-danger" ng-if="loginForm.password.$error.minlength||
+									loginForm.password.$error.maxlength">
+										用户名长度在6-12位之间！
+									</div>
 									<div class="text-danger" ng-if="login_failed">
 										用户名或密码错误！
 									</div>
@@ -253,6 +257,11 @@
 
 	<script type="text/ng-template" id='404.tpl'>
 		this is 404 page
+		<a ui-sref="home">home</a>
+		<a ui-sref="login">login</a>
+	</script>
+	<script type="text/ng-template" id='test.tpl'>
+		this is test page
 		<a ui-sref="home">home</a>
 		<a ui-sref="login">login</a>
 	</script>

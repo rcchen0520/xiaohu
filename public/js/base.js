@@ -15,6 +15,15 @@
                 //路由，配合html中的指令ui-view
 
                 $stateProvider
+                    .state('/', {
+                        url: '/',
+                        template:'首页'
+                    })
+                    .state('test', {
+                        url: '/test',
+                        // template:'首页'
+                        templateUrl: 'test.tpl'
+                    })
                     .state('signup', {
                         url: '/signup',
                         // template:'首页'
@@ -39,7 +48,7 @@
                       templateUrl:'404.tpl'
                     })
                 ;
-                // $urlRouterProvider.otherwise('/404');
+                $urlRouterProvider.when("", "/404");
             }
         ])
         .service('userService', ['$http', '$state', function($http, $state) {
@@ -72,13 +81,15 @@
             me.login=function(){
               $http.post('/api/login',me.login_data)
               .then(function(r){
+                console.log(r.data);
                 if(r.data.status){
-                  location.href='/';
+                  console.log("success");
+                  $state.go('/');
                 }else{
                   me.login_failed=true;//登录失败标志
                 }
               },function(e){
-                console.log("e"+e);
+                console.log(e);
               });
             }
         }])
