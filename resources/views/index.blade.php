@@ -25,7 +25,9 @@
 			<!-- 头部和按钮 -->
 			<!-- 响应内容 -->
 			<div class="collapse navbar-collapse" id="collapseNavbar">
-				<form class="navbar-form navbar-left" method="post" ng-controller="questionAddController">
+				<form class="navbar-form navbar-left" method="post"
+				ng-controller="questionAddController"
+				ng-submit="Question.go()">
 					<div class="form-group">
 						<input type="text" name="keyword" ng-model="Question.new_question.title" class="form-control">
 						<button type="submit" name="button" class="btn btn-default">
@@ -38,22 +40,26 @@
 					<li class="active"><a href="#">首页</a></li>
 					<li><a href="#">话题</a></li>
 					<li><a href="#">发现</a></li>
-					<li><a href="#">消息</a></li>
+					<!-- <li><a href="#">消息</a></li> -->
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-        	<li><a ui-sref='signup'>注册</a></li>
-        	<li><a ui-sref='login'>登录</a></li>
-        	<li class="dropdown">
-          	<a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <span class="caret"></span></a>
-          	<ul class="dropdown-menu" role="menu">
-            	<li><a href="#">Action</a></li>
-            	<li><a href="#">Another action</a></li>
-            	<li><a href="#">Something else here</a></li>
-            	<li class="divider"></li>
-            	<li><a href="#">Separated link</a></li>
-          	</ul>
-        	</li>
-      	</ul>
+					
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <span class="caret"></span></a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">Action</a></li>
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
+								<li class="divider"></li>
+								<li><a href="#">Separated link</a></li>
+							</ul>
+						</li>
+					
+						<li><a ui-sref='signup'>注册</a></li>
+						<li><a ui-sref='login'>登录</a></li>
+					
+				</ul>
+
 			</div>
 			<!-- 响应内容 -->
 		</div>
@@ -62,11 +68,13 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-8">
-				col-md-8
+			<div class="col-sm-8">
+				<h2>最新动态</h2>
+				<hr>
+				fadsfas
 			</div>
-			<div class="col-md-4">
-				col-md4
+			<div class="col-sm-4">
+				侧边栏
 			</div>
 		</div>
 	</div>
@@ -98,6 +106,9 @@
 									</div>
 									<div class="text-danger" ng-if="signupForm.username.$error.minlength||signupForm.username.$error.maxlength">
 										用户名长度必须为6-16位!
+									</div>
+									<div class="text-danger" ng-if="User.signup_username_exists">
+										用户名已存在！
 									</div>
 								</div>
 		    			</div>
@@ -146,12 +157,13 @@
 					<form class="form-horizontal" name="loginForm" ng-submit="User.login()">
 						<div class="form-group">
 							<div>测试：[:User.login_data:]</div>
+							<!-- ng-model-options="{updateOn:'blur'}" -->
 							<label class="col-sm-2 control-label">用户名：</label>
 		    			<div class="col-sm-8">
 								<input type="text" name="username" class="form-control"
 								placeholder="请输入用户名"
 								ng-model="User.login_data.username"
-								ng-model-options="{updateOn:'blur'}"
+								ng-model-options="{debounce:500}"
 								ng-minlength="6"
 								ng-maxlength="16"
 								required
@@ -215,21 +227,24 @@
 					<div class="panel panel-default">
 						<div class="panel-heading">添加提问</div>
 						<div class="panel-body">
-							<form class="form-horizontal" name="" ng-submit="">
+							<form class="form-horizontal" name="questionAddForm" ng-submit="Question.add()">
 								<div class="form-group">
 									<label class="col-sm-2 control-label">标题：</label>
 				    			<div class="col-sm-8">
-										<input type="text" name="username" class="form-control"
+										<input type="text" name="question_title" class="form-control"
 										placeholder="请输入问题标题"
 										required
+										ng-minlength="5"
+										ng-maxlength="255"
+										ng-model="Question.new_question.title"
 										>
-										<div class="help-block" ng-if="loginForm.username.$touched">
-											<div class="text-danger" ng-if="loginForm.username.$error.required">
-												用户名为必填项!
+										<div class="help-block" ng-if="questionAddForm.question_title.$touched">
+											<div class="text-danger" ng-if="questionAddForm.question_title.$error.required">
+												问题标题不能为空！
 											</div>
-											<div class="text-danger" ng-if="loginForm.username.$error.minlength||
-											loginForm.username.$error.maxlength">
-												用户名长度在6-12位之间！
+											<div class="text-danger" ng-if="questionAddForm.question_title.$error.minlength||
+											questionAddForm.question_title.$error.maxlength">
+												问题标题不能少于5位！
 											</div>
 										</div>
 				    			</div>
@@ -238,12 +253,15 @@
 								<div class="form-group">
 									<label class="col-sm-2 control-label">描述：</label>
 									<div class="col-sm-8">
-										<textarea class="form-control" rows="3"></textarea>
+										<textarea class="form-control" rows="3"
+											name="question_desc"
+											ng-model="Question.new_question.desc"
+										></textarea>
 									</div>
 								</div>
 								<div class="row">
 									<div class="col-sm-8 col-sm-offset-2">
-										<button class="btn btn-primary">提问</button>
+										<button class="btn btn-primary" ng-disabled="questionAddForm.$invalid">提问</button>
 									</div>
 								</div>
 							</form>
@@ -260,10 +278,8 @@
 		<a ui-sref="home">home</a>
 		<a ui-sref="login">login</a>
 	</script>
-	<script type="text/ng-template" id='test.tpl'>
-		this is test page
-		<a ui-sref="home">home</a>
-		<a ui-sref="login">login</a>
+	<script type="text/ng-template" id='home.tpl'>
+	home
 	</script>
 
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
