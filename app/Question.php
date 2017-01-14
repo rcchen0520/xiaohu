@@ -101,4 +101,9 @@ class Question extends Model
         return $question->delete()?['status' => 1]:['status' => 0,'msg' => 'db delete failed'];
 
     }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

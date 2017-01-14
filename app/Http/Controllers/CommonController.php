@@ -14,12 +14,14 @@ class CommonController extends Controller
         list($limit,$skip) = paginate(rq('page'),rq('limit'));
         //获取问题数据
         $questions = question_ins()
+            ->with('user')
             ->limit($limit)
             ->skip($skip)
             ->orderBy('created_at','desc')
             ->get();
         //获取回复数据
         $answers = answer_ins()
+            ->with('user')
             ->limit($limit)
             ->skip($skip)
             ->orderBy('created_at','desc')
