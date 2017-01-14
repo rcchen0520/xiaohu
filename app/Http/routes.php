@@ -155,3 +155,20 @@ Route::any('api/timeline','CommonController@timeline');
 Route::group(['middleware' => ['web']], function () {
     //
 });
+
+// 返回前端路由视图
+Route::get('tpl/page/home',function(){
+    return view('page.home');//注意路由写法
+});
+Route::get('tpl/page/signup',function(){
+    return view('page.signup');
+});
+Route::get('tpl/page/login',function(){
+    return view('page.login');
+});
+Route::get('tpl/page/question_add',function(){
+    return view('page.question_add');
+});
+Route::get('tpl/page/404',function(){
+    return view('page.404');
+});

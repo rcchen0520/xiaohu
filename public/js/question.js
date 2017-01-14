@@ -1,0 +1,31 @@
+;(function(){
+	'use strict';
+	angular.module('question',[])
+	//问题实例：service和controller
+	.service('questionService',['$http','$state',function($http,$state){
+	  var me=this;
+	  me.new_question={};
+	  me.go=function(){
+	    $state.go('question.add');
+	  },
+	  me.add=function(){
+	    $http.post('/api/question/add',me.new_question)
+	    .then(function(r){
+	      if(r.data.status){
+	        me.new_question={};//清空问题
+	        $state.go('home');//新问题有添加到home页面？？？2017/1/14
+	      }
+	    },function(e){
+	      console.log(e);
+	    });
+	  }
+	}])
+	.controller('questionAddController',[
+	  '$scope',
+	  'questionService'
+	  ,function($scope,questionService){
+	    $scope.Question=questionService;
+	  }
+	])
+	;
+})();
