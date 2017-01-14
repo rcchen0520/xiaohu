@@ -2,7 +2,7 @@
 <html lang="en" ng-app='xiaohu'>
 <head>
 	<meta charset="UTF-8">
-	<title>晓乎</title>
+	<title>知乎</title>
 	<link rel="stylesheet" href="node_modules/normalize-css/normalize.css">
 	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="public/css/app.css">
@@ -10,7 +10,7 @@
 </head>
 <body>
 	<!-- 导航条 -->
-	<div class="navbar navbar-default">
+	<div class="navbar navbar-blue">
 		<div class="container">
 			<!-- 头部和按钮 -->
 			<div class="navbar-header">
@@ -20,7 +20,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a href="#" class="navbar-brand">晓乎</a>
+				<a href="#" class="navbar-brand">知乎</a>
 			</div>
 			<!-- 头部和按钮 -->
 			<!-- 响应内容 -->
@@ -43,9 +43,10 @@
 					<!-- <li><a href="#">消息</a></li> -->
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					
+					@if(user_ins()->is_logged_in())
+
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">用户 <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{session('username')}} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="#">Action</a></li>
 								<li><a href="#">Another action</a></li>
@@ -54,10 +55,10 @@
 								<li><a href="#">Separated link</a></li>
 							</ul>
 						</li>
-					
+					@else
 						<li><a ui-sref='signup'>注册</a></li>
 						<li><a ui-sref='login'>登录</a></li>
-					
+					@endif
 				</ul>
 
 			</div>
@@ -66,18 +67,75 @@
 	</div>
 	<!-- 导航条 -->
 
-	<div class="container">
+<!-- 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8">
 				<h2>最新动态</h2>
 				<hr>
-				fadsfas
+				<div class="media-group">
+
+					<div class="media item-content">
+					  <a class="media-left vote">
+					    <span>投票</span>
+					  </a>
+					  <div class="media-body item-content-body">
+					  	<p class="content-act">某某某赞了这篇文章</p>
+					    <h4 class="media-heading content-title">什么时候你觉得读书最有用？</h4>
+					    <p class="content-owner">回答者</p>
+					    <p class="content-main">
+					    	这里问题的描述内容！这里问题的描述内容！
+					    	这里问题的描述内容！这里问题的描述内容！
+					    	这里问题的描述内容！这里问题的描述内容！
+					    	这里问题的描述内容！这里问题的描述内容！
+					    </p>
+					    <p class="action-btn-group">
+					    	<span class="action-btn comment-btn">
+					    		<span class="glyphicon glyphicon-comment icon"></span> 评论
+					    	</span>
+					    	<span class="action-btn comment-btn">
+					    		<span class="glyphicon glyphicon-comment icon"></span> 其他
+					    	</span>
+					    	<span class="action-btn comment-btn">
+					    		<span class="glyphicon glyphicon-comment icon"></span> 其他
+					    	</span>
+					    </p>
+					    <div class="comment-block">
+
+					    	<div class="comment-item">
+					    		<div class="media">
+					    		  <a class="media-left">
+					    		    <img src="public/images/userImg.jpg" class="avatar_25">
+					    		  </a>
+					    		  <div class="media-body">
+					    		    <h4 class="media-heading">Media heading</h4>
+					    		    <p>问题的评论</p>
+					    		  </div>
+					    		</div>
+					    	</div>
+					    	<div class="comment-item">
+					    		<div class="media">
+					    		  <a class="media-left" href="#">
+					    		    <img src="public/images/userImg.jpg" class="avatar_25">
+					    		  </a>
+					    		  <div class="media-body">
+					    		    <h4 class="media-heading">Media heading</h4>
+					    		    <p>问题的评论</p>
+					    		  </div>
+					    		</div>
+					    	</div>
+
+					    </div>
+					  </div>
+					</div>
+					<hr>
+
+				</div>
 			</div>
-			<div class="col-sm-4">
+			<div class="col-sm-4 ">
 				侧边栏
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<!-- 视图路由 -->
 	<div ui-view></div>
 
@@ -199,7 +257,7 @@
 									loginForm.password.$error.maxlength">
 										用户名长度在6-12位之间！
 									</div>
-									<div class="text-danger" ng-if="login_failed">
+									<div class="text-danger" ng-if="User.login_failed">
 										用户名或密码错误！
 									</div>
 								</div>
@@ -279,7 +337,76 @@
 		<a ui-sref="login">login</a>
 	</script>
 	<script type="text/ng-template" id='home.tpl'>
-	home
+		<!--首页模板-->
+		<div class="container" ng-controller="homeController">
+			<div class="row">
+				<div class="col-sm-8">
+					<h2>最新动态</h2>
+					<hr>
+					<div class="media-group">
+
+						<div class="media item-content" ng-repeat="item in timeline.data">
+						  <a class="media-left vote">
+						    <span>投票</span>
+						  </a>
+						  <div class="media-body item-content-body">
+						  	<p class="content-act">用户[:item.user_id:]赞了这篇文章</p>
+						    <h4 class="media-heading content-title">[:item.title:]</h4>
+						    <p class="content-owner">用户[:item.user_id:]</p>
+						    <p class="content-main">
+						    	[:item.desc:]
+						    </p>
+						    <p class="action-btn-group">
+						    	<span class="action-btn comment-btn">
+						    		<span class="glyphicon glyphicon-comment icon"></span> 评论
+						    	</span>
+						    	<span class="action-btn comment-btn">
+						    		<span class="glyphicon glyphicon-comment icon"></span> 其他
+						    	</span>
+						    	<span class="action-btn comment-btn">
+						    		<span class="glyphicon glyphicon-comment icon"></span> 其他
+						    	</span>
+						    </p>
+						    <div class="comment-block">
+
+						    	<div class="comment-item">
+						    		<div class="media">
+						    		  <a class="media-left">
+						    		    <img src="public/images/userImg.jpg" class="avatar_25">
+						    		  </a>
+						    		  <div class="media-body">
+						    		    <h4 class="media-heading">Media heading</h4>
+						    		    <p>问题的评论</p>
+						    		  </div>
+						    		</div>
+						    	</div>
+						    	<div class="comment-item">
+						    		<div class="media">
+						    		  <a class="media-left" href="#">
+						    		    <img src="public/images/userImg.jpg" class="avatar_25">
+						    		  </a>
+						    		  <div class="media-body">
+						    		    <h4 class="media-heading">Media heading</h4>
+						    		    <p>问题的评论</p>
+						    		  </div>
+						    		</div>
+						    	</div>
+
+						    </div>
+						  </div>
+						  <hr>
+						</div>
+						
+					</div>
+					<!--加载提示-->
+					<div class="alert alert-info" ng-if="timeline.pending">正在加载中！请稍等</div>
+					<div class="alert alert-info" ng-if="timeline.no_more_data">没有更多数据了！</div>
+				</div>
+				<div class="col-sm-4 ">
+					侧边栏
+				</div>
+			</div>
+		</div>
 	</script>
 
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>

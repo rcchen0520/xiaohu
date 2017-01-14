@@ -1,0 +1,86 @@
+@charset "UTF-8";
+/*字体图标居中*/
+.icon{
+	vertical-align: middle;
+}
+
+/*自定义导航栏*/
+.navbar-blue {
+	background: #0767c8;
+    background: -webkit-linear-gradient(top,#086ed5,#055db5);
+    background: linear-gradient(to bottom,#086ed5,#055db5);
+    border-bottom: 1px solid #044e97;
+    box-shadow: 0 1px 2px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.15);
+}
+.navbar-blue a{
+	color: #fff;
+}
+.nav>li>a:focus, .nav>li>a:hover{
+	background: none;
+}
+.navbar-toggle{
+	border: 1px solid #fff;
+}
+.navbar-toggle .icon-bar{
+	background: #fff;
+}
+/*--------------------问题模块样式--------------------*/
+.media-group{
+	color:#222;
+}
+.item-content{
+    
+}
+.item-content .vote{}
+.item-content .item-content-body{
+	line-height: 1.7
+}
+.item-content .content-act{
+	color: #666;
+}
+.item-content .content-title{
+	font-weight: 700;
+}
+.item-content .content-owner{
+	color: #666;
+}
+.item-content .content-main{}
+.item-content .action-btn-group{
+	color:#999;
+}
+.item-content .action-btn-group .action-btn{
+	margin-right: 20px;
+}
+
+/*评论列表*/
+.comment-block{
+	border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 3px;
+    position: relative;
+    /*display: none;*/
+}
+.comment-block:after{
+	content: "";
+	position:absolute;
+	top: -10px;
+	left: 20px;
+	width:0; 
+    height:0; 
+    border-left:10px solid transparent;
+    border-right:10px solid transparent;
+    border-bottom:10px solid #ddd;
+}
+.comment-block .comment-item{
+	padding:10px 0px;
+	border-bottom: 1px solid #ddd;
+}
+.comment-block .comment-item:last-child{
+	border: none;
+}
+.avatar_25{
+	width: 25px;
+	height: 25px;
+	border-radius: 3px;
+}
+
