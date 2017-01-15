@@ -69,7 +69,10 @@ class Answer extends Model
         }
         //只查看单个回答
         if (rq('id')) {
-            $answer = $this->find(rq('id'));
+            $answer = $this
+                ->with('user')
+                ->with('users')
+                ->find(rq('id'));
             if (!$answer) {
                 return ['status' => 0, 'msg' => 'answer not exists'];
             } else {
@@ -103,13 +106,20 @@ class Answer extends Model
             return ['status' => 0,'msg' => 'answer not exists'];
         }
 
-        $vote = rq('vote')<=1 ? 1:2;
+        $vote = rq('vote');
+        if($vote!=1&&$vote!=2&&$vote!=3){
+            return ['status' => 0,'msg' => 'invalid vote'];
+        }
 
             $answer ->users()
             ->newPivotStatement()
             ->where('user_id',session('user_id'))
             ->where('answer_id',rq('id'))
             ->delete();
+
+        if($vote == 3){
+            return ['status' => 1];
+        }
 
         $answer
             ->users()

@@ -22,6 +22,7 @@ class CommonController extends Controller
         //获取回复数据
         $answers = answer_ins()
             ->with('user')
+            ->with('users')
             ->limit($limit)
             ->skip($skip)
             ->orderBy('created_at','desc')
