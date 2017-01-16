@@ -58,13 +58,32 @@ class Question extends Model
 
     }
 
+    public function read_by_user_id($user_id)
+    {
+        $user = user_ins()->find($user_id);
+        if(!$user){
+            return err('user not exist');
+        }
+        $r = $this->where('user_id',$user_id)->get()->keyBy('id');
+        return suc($r->toArray());
+    }
+
     //查看问题api
     public function read(){
-        if(rq('id'))
-            return ['ststus' => 1,'data' => $this->find(rq('id'))];
-//        $limit = rq('limit')? : 15;
-//
-//        $skip = (rq('page')? (rq('page')-1): 0) * $limit;
+        //请求参数中是否有id，如果有的话直接返回id所在行
+        if(rq('id')){
+            $r = $this
+                ->with('answers_with_user_info')
+                ->find(rq('id'));
+            return ['ststus' => 1,'data' => $r];
+        }
+
+        if(rq('user_id')){
+            $user_id = rq('user_id') == 'self'?session('user_id'):rq('user_id');
+            return $this->read_by_user_id($user_id);
+        }
+        //list条件
+        //skip条件，用于分页
         list($limit,$skip) = paginate(rq('page'),rq('limit'));
 
         $r = $this
@@ -105,5 +124,18 @@ class Question extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function answers()
+    {
+        return $this->hasMany('App\Answer');
+    }
+
+    public function answers_with_user_info()
+    {
+        return $this
+            ->answers()
+            ->with('user')
+            ->with('users');
     }
 }

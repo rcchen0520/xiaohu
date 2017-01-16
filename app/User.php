@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 //use Illuminate\Http\Request;
 use Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class User extends Model
 {
@@ -47,11 +48,21 @@ class User extends Model
         if(!rq('id')){
             return err('required id');
         }
+
+        if(rq('id')==='self'){
+            if(!$this->is_logged_in()){
+                return err('login required');
+            }
+            $id = session('user_id');
+        }else{
+            $id = rq('id');
+        }
+//        $id = rq('id')==='self'?session('user_id'):rq('id');
         $get = ['id','username','avatar_url','intro'];
-        $user = $this->find(rq('id'),$get);
+        $user = $this->find($id,$get);
         $data = $user->toArray();
-        $answer_count = answer_ins()->where('user_id',rq('id'))->count();
-        $question_count = question_ins()->where('user_id',rq('id'))->count();
+        $answer_count = answer_ins()->where('user_id',$id)->count();
+        $question_count = question_ins()->where('user_id',$id)->count();
         $data['answer_count'] = $answer_count;
         $data['question_count'] = $question_count;
 
@@ -109,6 +120,7 @@ class User extends Model
 //        dd(session('user_id'));
         /*存在问题，没有登陆应该返回false，现在暂时用0代替*/
         return session('user_id')?:0;
+//        return Session::get('user_id')?:0;
     }
 
     /*登出*/

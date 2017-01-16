@@ -21,8 +21,9 @@ class CommonController extends Controller
             ->get();
         //获取回复数据
         $answers = answer_ins()
-            ->with('user')
+            ->with('question')
             ->with('users')
+            ->with('user')
             ->limit($limit)
             ->skip($skip)
             ->orderBy('created_at','desc')

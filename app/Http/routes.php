@@ -43,10 +43,10 @@ function err($msg = null){
     return ['status' => 0,'msg' => $msg];
 }
 
-function suc($data_to_merge = []){
+function suc($data_to_add = []){
     $data = ['status' => 1,'data' => []];
-    if ($data_to_merge){
-        $data['data'] =array_merge($data['data'],$data_to_merge);
+    if ($data_to_add){
+        $data['data'] =$data_to_add;
     }
     return $data;
 }

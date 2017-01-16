@@ -46,7 +46,7 @@
 					@if(user_ins()->is_logged_in())
 
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{session('username')}} <span class="caret"></span></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">{{session('username')}}<span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="#">Action</a></li>
 								<li><a href="#">Another action</a></li>
